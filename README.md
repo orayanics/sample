@@ -12,3 +12,5 @@ npm start <br>
 
 for nodemon <br>
 npm run dev <br>
+
+setup your mysql database
