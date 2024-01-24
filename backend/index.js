@@ -1,14 +1,16 @@
 const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql");
-const app = express();
+
 const port = 3000;
 
 // MIDDLEWARE
 app.use(cors());
 app.use(express.json());
-
+const app = express();
 // MYSQL CONNECTION
+// ENTER THIS IN QUERY IN MYSQL
+// ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your_current_password';
 const db = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
@@ -26,7 +28,7 @@ db.connect();
 // });
 
 // POST /USERS REQUEST
-app.post("./sample", (req, res) => {
+app.post("./add", (req, res) => {
   const name = req.body.name;
   const phone = req.body.phone;
   console.log("THIS IS SERVER " + name, phone);
@@ -42,13 +44,13 @@ app.post("./sample", (req, res) => {
   });
 });
 
-app.get("./sample", (req, res) => {
-  const query = "SELECT * FROM users";
-  db.query(query, (err, data) => {
-    if (err) return res.json(err);
-    return console.log(data);
-  });
-});
+// app.get("./sample", (req, res) => {
+//   const query = "SELECT * FROM users";
+//   db.query(query, (err, data) => {
+//     if (err) return res.json(err);
+//     return console.log(data);
+//   });
+// });
 
 // GET /USERS ALL USERS
 app.get("/getusers", (req, res) => {
