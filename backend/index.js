@@ -1,13 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql");
-
-const port = 3000;
+const app = express();
+const port = 3001;
 
 // MIDDLEWARE
 app.use(cors());
 app.use(express.json());
-const app = express();
+
 // MYSQL CONNECTION
 // ENTER THIS IN QUERY IN MYSQL
 // ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your_current_password';
@@ -28,7 +28,7 @@ db.connect();
 // });
 
 // POST /USERS REQUEST
-app.post("./add", (req, res) => {
+app.post("/add", (req, res) => {
   const name = req.body.name;
   const phone = req.body.phone;
   console.log("THIS IS SERVER " + name, phone);

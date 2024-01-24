@@ -2,7 +2,7 @@ import { useState } from "react";
 import Axios, { isCancel, AxiosError } from "axios";
 
 export default function UserAdd() {
-  Axios.defaults.baseURL = "http://localhost:3000";
+  Axios.defaults.baseURL = "http://localhost:3001";
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -10,7 +10,7 @@ export default function UserAdd() {
   const postDb = async (e) => {
     e.preventDefault();
     // Make a POST request to the server
-    await Axios.post("http://localhost:3000/add", { name, phone })
+    await Axios.post("http://localhost:3001/add", { name, phone })
       .then(() => {
         console.log("THIS IS FRONTEND AXIOS " + name, phone);
         console.log("Success");
