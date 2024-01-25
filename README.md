@@ -6,7 +6,7 @@ cd client <br>
 npm install <br>
 npm start <br>
 
-cd server <br>
+cd backend <br>
 npm install <br>
 npm start <br>
 
