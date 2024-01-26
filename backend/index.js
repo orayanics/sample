@@ -53,6 +53,16 @@ app.get("/list", (req, res) => {
   });
 });
 
+// GET /USERS/ID ALL USERS
+app.get(`/list/:id`, (req, res) => {
+  const id = req.params.id;
+  const query = "SELECT * FROM users where idusers = ?";
+  db.query(query, [id], (err, result) => {
+    if (err) res.json({ message: "Server error" });
+    return res.json(result);
+  });
+});
+
 // DELETE USER
 app.delete("/list/delete/:id", (req, res) => {
   const userId = req.params.id;

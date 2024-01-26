@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import Axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function UserList() {
   const [users, setUsers] = React.useState([]);
@@ -30,9 +31,6 @@ export default function UserList() {
       console.error("Error fetching data:", error);
     }
   };
-
-  // UPDATE ONLCICK HANDLER
-
   return (
     <div className="container">
       <p>UserList</p>
@@ -42,8 +40,7 @@ export default function UserList() {
             <p>{val.idusers}</p>
             <p>{val.name}</p>
             <p>{val.phone}</p>
-
-            <button>Update</button>
+            <Link to={`/list/${val.idusers}`}>Update</Link>
             <button onClick={() => deleteData(val.idusers)}>Delete</button>
           </div>
         );
