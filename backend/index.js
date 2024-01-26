@@ -44,20 +44,28 @@ app.post("/add", (req, res) => {
   });
 });
 
-// app.get("./sample", (req, res) => {
-//   const query = "SELECT * FROM users";
-//   db.query(query, (err, data) => {
-//     if (err) return res.json(err);
-//     return console.log(data);
-//   });
-// });
-
 // GET /USERS ALL USERS
 app.get("/list", (req, res) => {
   const query = "SELECT * FROM users";
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.send(data);
+  });
+});
+
+// DELETE USER
+app.delete("/list/delete/:id", (req, res) => {
+  const userId = req.params.id;
+  const sql = "DELETE FROM users WHERE idusers = ?";
+
+  db.query(sql, [userId], (err, result) => {
+    if (err) {
+      console.error("Error deleting user:", err);
+      res.status(500).send("Internal Server Error");
+    } else {
+      console.log("User deleted successfully");
+      res.status(200).send("User deleted successfully");
+    }
   });
 });
 

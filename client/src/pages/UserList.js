@@ -2,33 +2,49 @@ import React, { useEffect } from "react";
 import Axios from "axios";
 
 export default function UserList() {
-  const [res, setResponse] = React.useState([]);
+  const [users, setUsers] = React.useState([]);
 
-  // res into list
-
+  // FETCH DATA ONCE
   useEffect(() => {
-    Axios.get("http://localhost:3001/list")
-      .then(function (response) {
-        // handle success
-        setResponse(response.data);
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .finally(function () {
-        // always executed
-      });
-  });
+    fetchData();
+  }, []);
+
+  // PUT INTO FUNCTION GET USERS
+  const fetchData = async () => {
+    try {
+      const response = await Axios.get("http://localhost:3001/list");
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  // DELETE ONCLICK HANDLER
+  const deleteData = async (id) => {
+    try {
+      const response = await Axios.delete(
+        `http://localhost:3001/list/delete/${id}`
+      );
+      fetchData();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  // UPDATE ONLCICK HANDLER
+
   return (
-    <div>
+    <div className="container">
       <p>UserList</p>
-      {res.map((val, key) => {
+      {users.map((val, key) => {
         return (
-          <div>
+          <div className="card-crud" key={val.idusers}>
+            <p>{val.idusers}</p>
             <p>{val.name}</p>
             <p>{val.phone}</p>
+
+            <button>Update</button>
+            <button onClick={() => deleteData(val.idusers)}>Delete</button>
           </div>
         );
       })}
