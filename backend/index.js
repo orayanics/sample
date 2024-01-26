@@ -53,11 +53,11 @@ app.post("/add", (req, res) => {
 // });
 
 // GET /USERS ALL USERS
-app.get("/getusers", (req, res) => {
+app.get("/list", (req, res) => {
   const query = "SELECT * FROM users";
   db.query(query, (err, data) => {
     if (err) return res.json(err);
-    return res.json(data);
+    return res.send(data);
   });
 });
 
