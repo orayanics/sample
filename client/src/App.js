@@ -11,7 +11,7 @@ function App() {
         <Routes>
           {/* PAGES HERE */}
           <Route path="/" element={<Sample />} />
-          <Route path="/users" element={<List />} />
+          <Route path="/list" element={<List />} />
           <Route path="/sample" element={<Users />} />
         </Routes>
       </BrowserRouter>
