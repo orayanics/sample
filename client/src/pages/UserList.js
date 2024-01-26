@@ -40,7 +40,12 @@ export default function UserList() {
             <p>{val.idusers}</p>
             <p>{val.name}</p>
             <p>{val.phone}</p>
-            <Link to={`/list/${val.idusers}`}>Update</Link>
+            <button>
+              <Link to={`/list/${val.idusers}`}>Read</Link>
+            </button>
+            <button>
+              <Link to={`/list/edit/${val.idusers}`}>Update</Link>
+            </button>
             <button onClick={() => deleteData(val.idusers)}>Delete</button>
           </div>
         );

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Axios, { isCancel, AxiosError } from "axios";
+import Axios from "axios";
 
 export default function UserAdd() {
   Axios.defaults.baseURL = "http://localhost:3001";

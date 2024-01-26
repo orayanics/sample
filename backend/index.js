@@ -29,11 +29,10 @@ db.connect();
 
 // POST /USERS REQUEST
 app.post("/add", (req, res) => {
-  const name = req.body.name;
-  const phone = req.body.phone;
   console.log("THIS IS SERVER " + name, phone);
   const sql = "INSERT INTO users (name, phone) VALUES (?, ?)";
-  db.query(sql, [name, phone], (err, result) => {
+  const values = [req.body.name, req.body.phone];
+  db.query(sql, values, (err, result) => {
     if (err) {
       console.error("Error inserting data into MySQL:", err);
       res.status(500).send("Internal Server Error");
@@ -58,6 +57,17 @@ app.get(`/list/:id`, (req, res) => {
   const id = req.params.id;
   const query = "SELECT * FROM users where idusers = ?";
   db.query(query, [id], (err, result) => {
+    if (err) res.json({ message: "Server error" });
+    return res.json(result);
+  });
+});
+
+// UPDATE /USERS/ID
+app.post(`/list/edit/:id`, (req, res) => {
+  const id = req.params.id;
+  const query = "UPDATE users SET name = ?, phone = ? WHERE idusers = ?";
+  const values = [req.body.name, req.body.phone, id];
+  db.query(query, values, (err, result) => {
     if (err) res.json({ message: "Server error" });
     return res.json(result);
   });
