@@ -37,7 +37,7 @@ export default function UserUpdate() {
       <p>UserDetail</p>
       {users.map((val) => {
         return (
-          <div className="card-crud">
+          <div className="card-crud" key={val.idusers}>
             <p>{val["idusers"]}</p>
             <p>{val["name"]}</p>
             <p>{val["phone"]}</p>

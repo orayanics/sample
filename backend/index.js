@@ -20,19 +20,13 @@ const db = mysql.createConnection({
 
 db.connect();
 
-// SAMPLE QUERY
-// WORKING DB CONNECTION
-// db.query("SELECT * FROM users", (err, res) => {
-//   if (err) return console.log(err);
-//   return console.log(res);
-// });
-
 // POST /USERS REQUEST
 app.post("/add", (req, res) => {
+  const name = req.body.name;
+  const phone = req.body.phone;
   console.log("THIS IS SERVER " + name, phone);
   const sql = "INSERT INTO users (name, phone) VALUES (?, ?)";
-  const values = [req.body.name, req.body.phone];
-  db.query(sql, values, (err, result) => {
+  db.query(sql, [name, phone], (err, result) => {
     if (err) {
       console.error("Error inserting data into MySQL:", err);
       res.status(500).send("Internal Server Error");

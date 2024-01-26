@@ -34,7 +34,7 @@ export default function UserList() {
   return (
     <div className="container">
       <p>UserList</p>
-      {users.map((val, key) => {
+      {users.map((val) => {
         return (
           <div className="card-crud" key={val.idusers}>
             <p>{val.idusers}</p>
