@@ -1,4 +1,7 @@
 import "./App.css";
+import "./styles/globals.css";
+import "./styles/add_client.css";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Sample from "./pages/Sample";

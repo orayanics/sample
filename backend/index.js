@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql");
 const app = express();
-const port = 3001;
+const port = 1560;
 
 // MIDDLEWARE
 app.use(cors());
@@ -14,8 +14,8 @@ app.use(express.json());
 const db = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
-  password: "admin123",
-  database: "softeng",
+  password: "",
+  database: "prioritrack",
 });
 
 db.connect();
@@ -23,6 +23,7 @@ db.connect();
 // POST /USERS REQUEST
 app.post("/add", (req, res) => {
   const name = req.body.name;
+<<<<<<< Updated upstream
   const phone = req.body.phone;
   console.log("THIS IS SERVER " + name, phone);
   const sql = "INSERT INTO users (name, phone) VALUES (?, ?)";
@@ -33,53 +34,52 @@ app.post("/add", (req, res) => {
     } else {
       console.log("Data inserted into MySQL:", result);
       res.status(200).send("Contact added successfully");
+=======
+
+  const property_location = req.body.property_location;
+
+  const client_bank_name = req.body.client_bank_name;
+
+  const client_bank_address = req.body.client_bank_address;
+
+  console.log(
+    "THIS IS SERVER " + name,
+    property_location,
+    client_bank_name,
+    client_bank_address
+  );
+  const sql =
+    "INSERT INTO prioritrack (name,client_property_location,client_bank_name,client_bank_address) VALUES (?, ?, ?, ?)";
+  db.query(
+    sql,
+    [name, property_location, client_bank_name, client_bank_address],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting data into MySQL:", err);
+        res.status(500).send("Internal Server Error");
+      } else {
+        console.log("Data inserted into MySQL:", result);
+        res.status(200).send("Contact added successfully");
+      }
+>>>>>>> Stashed changes
     }
-  });
+  );
 });
 
+// app.get("./sample", (req, res) => {
+//   const query = "SELECT * FROM users";
+//   db.query(query, (err, data) => {
+//     if (err) return res.json(err);
+//     return console.log(data);
+//   });
+// });
+
 // GET /USERS ALL USERS
-app.get("/list", (req, res) => {
+app.get("/getusers", (req, res) => {
   const query = "SELECT * FROM users";
   db.query(query, (err, data) => {
     if (err) return res.json(err);
-    return res.send(data);
-  });
-});
-
-// GET /USERS/ID ALL USERS
-app.get(`/list/:id`, (req, res) => {
-  const id = req.params.id;
-  const query = "SELECT * FROM users where idusers = ?";
-  db.query(query, [id], (err, result) => {
-    if (err) res.json({ message: "Server error" });
-    return res.json(result);
-  });
-});
-
-// UPDATE /USERS/ID
-app.post(`/list/edit/:id`, (req, res) => {
-  const id = req.params.id;
-  const query = "UPDATE users SET name = ?, phone = ? WHERE idusers = ?";
-  const values = [req.body.name, req.body.phone, id];
-  db.query(query, values, (err, result) => {
-    if (err) res.json({ message: "Server error" });
-    return res.json(result);
-  });
-});
-
-// DELETE USER
-app.delete("/list/delete/:id", (req, res) => {
-  const userId = req.params.id;
-  const sql = "DELETE FROM users WHERE idusers = ?";
-
-  db.query(sql, [userId], (err, result) => {
-    if (err) {
-      console.error("Error deleting user:", err);
-      res.status(500).send("Internal Server Error");
-    } else {
-      console.log("User deleted successfully");
-      res.status(200).send("User deleted successfully");
-    }
+    return res.json(data);
   });
 });
 
