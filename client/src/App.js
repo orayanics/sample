@@ -6,6 +6,7 @@ import Users from "./pages/UserAdd";
 import List from "./pages/UserList";
 import Detail from "./pages/UserDetail";
 import Update from "./pages/UserUpdate";
+import AddDocument from "./pages/AddDocument";
 function App() {
   return (
     <div className="App">
@@ -14,6 +15,7 @@ function App() {
           {/* PAGES HERE */}
           <Route path="/" element={<Sample />} />
           <Route path="/list" element={<List />} />
+          <Route path="/document/:id" element={<AddDocument />} />
           <Route path="/sample" element={<Users />} />
           <Route path="/list/:id" element={<Detail />} />
           <Route path="/list/edit/:id" element={<Update />} />

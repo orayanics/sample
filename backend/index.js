@@ -37,6 +37,23 @@ app.post("/add", (req, res) => {
   });
 });
 
+// POST /USERS/ID for DOCUMENT
+app.post("/document/:id", (req, res) => {
+  const { content } = req.body;
+  const userId = req.params.id
+  console.log("THIS IS SERVER " + userId, content);
+  const sql = "INSERT INTO documents (doc_name, idusers) VALUES (?, ?)";
+  db.query(sql, [content, userId], (err, result) => {
+    if (err) {
+      console.error("Error inserting data into MySQL:", err);
+      res.status(500).send("Internal Server Error");
+    } else {
+      console.log("Data inserted into MySQL:", result);
+      res.status(200).send("Contact added successfully");
+    }
+  });
+});
+
 // GET /USERS ALL USERS
 app.get("/list", (req, res) => {
   const query = "SELECT * FROM users";
@@ -47,14 +64,68 @@ app.get("/list", (req, res) => {
 });
 
 // GET /USERS/ID ALL USERS
+// app.get(`/list/:id`, (req, res) => {
+//   const id = req.params.id;
+//   const query = "SELECT * FROM users where idusers = ?";
+//   db.query(query, [id], (err, result) => {
+//     if (err) res.json({ message: "Server error" });
+//     return res.json(result);
+//   });
+// });
+
+// GET DOCUMENTS AND USER DETAILS BY USER ID
+// app.get(`/list/:id`, (req, res) => {
+//   const userId = req.params.id;
+//   const id = parseInt(userId)
+//   const query = `
+//   SELECT u.*, d.id_doc, d.doc_name
+// FROM users u
+// LEFT JOIN documents d ON u.idusers = d.idusers
+// WHERE u.idusers = ?;`;
+//   db.query(query, [id], (err, result) => {
+//     if (err) {
+//       res.status(500).json({ message: "Server error" });
+//     } else {
+//       res.json(result);
+//       console.log(result)
+//     }
+//   });
+// });
 app.get(`/list/:id`, (req, res) => {
-  const id = req.params.id;
-  const query = "SELECT * FROM users where idusers = ?";
+  const userId = req.params.id;
+  const id = parseInt(userId);
+  const query = `
+    SELECT u.*, d.id_doc, d.doc_name
+    FROM users u
+    LEFT JOIN documents d ON u.idusers = d.idusers
+    WHERE u.idusers = ?`;
   db.query(query, [id], (err, result) => {
-    if (err) res.json({ message: "Server error" });
-    return res.json(result);
+    if (err) {
+      res.status(500).json({ message: "Server error" });
+    } else {
+      const userData = {
+        idusers: result[0].idusers,
+        name: result[0].name,
+        phone: result[0].phone,
+        documents: [],
+      };
+
+      result.forEach((row) => {
+        if (row.id_doc && row.doc_name) {
+          userData.documents.push({
+            id_doc: row.id_doc,
+            doc_name: row.doc_name,
+          });
+        }
+      });
+
+      res.json(userData);
+      console.log(userData);
+    }
   });
 });
+
+
 
 // UPDATE /USERS/ID
 app.post(`/list/edit/:id`, (req, res) => {
@@ -67,11 +138,13 @@ app.post(`/list/edit/:id`, (req, res) => {
   });
 });
 
-// DELETE USER
+// DELETE USER AND ALL DOCUMENTS
 app.delete("/list/delete/:id", (req, res) => {
   const userId = req.params.id;
-  const sql = "DELETE FROM users WHERE idusers = ?";
-
+  const sql =
+    `DELETE users, documents FROM users
+    LEFT JOIN documents ON users.idusers = documents.idusers
+    WHERE users.idusers = ?`;
   db.query(sql, [userId], (err, result) => {
     if (err) {
       console.error("Error deleting user:", err);
